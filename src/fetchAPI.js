@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-export default async function getPicture (inputValue, page) {
-    const keyAPI = '32151990-9b10be0026312dee6c1690c83'
-    const url = 'https://pixabay.com/api/'
-    const options = `?key=${keyAPI}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=20&page=${page = 1}`
+// export default async function getPicture (inputValue, page) {
+//     const keyAPI = '32151990-9b10be0026312dee6c1690c83'
+//     const url = 'https://pixabay.com/api/'
+//     const options = `?key=${keyAPI}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&per_page=20&page=${page = 1}`
 
-    return await axios.get(`${url}${options}`).then(response => {
-       return page + 1
-       return response.data})
-}
+//     return await axios.get(`${url}${options}`).then(response => {
+//        return page + 1
+//        return response.data})
+// }
 // `?key=${keyAPI}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true`
 
 export default class Picture {

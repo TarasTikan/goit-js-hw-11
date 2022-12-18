@@ -6,24 +6,41 @@ const inputEl = document.querySelector('[name="searchQuery"]')
 const formEl = document.querySelector('.search-form')
 const gallery = document.querySelector('.gallery')
 const loadBtn = document.querySelector('.load-more')
+
+let currentHits = 0;
+
 formEl.addEventListener('submit', getPictureEL)
+
+loadBtn.style.display = "none";
 
 const picture = new Picture ()
 async function getPictureEL (e){
     e.preventDefault()
 
-    picture.newValueInp = inputEl.value
-    //   else if (picture.newValueInp !== )
+    picture.serchPict = inputEl.value
+    picture.resetPage()
     clear()
-    if (picture.newValueInp === '') {
+    if (picture.serchPict === '') {
+      loadBtn.style.display = "none";
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
         return
       }
-picture.getPicture().then(cardIMG => {
+
+picture.getPicture().then(cardImg => {
+  if(cardImg.totalHits === 0) {
+    Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+  }else {
+    loadBtn.style.display = "block";
+  }
+
+  currentHits = cardImg.hits.length;
+  render(cardImg.hits)
 })
+
 }
 function render (cardIMG) {
-    const galleryItem = cardIMG.map(([{webformatURL,largeImageURL,tags,likes,views,comments,downloads}]) => {
+  // const [{webformatURL,largeImageURL,tags,likes,views,comments,downloads}] = cardIMG
+    const galleryItem = cardIMG.map(({webformatURL,largeImageURL,tags,likes,views,comments,downloads}) => {
         return `<div class="photo-card">
         <img src="${webformatURL}" alt="${tags}" loading="lazy" />
         <div class="info">
@@ -46,9 +63,16 @@ function render (cardIMG) {
 }
 
 loadBtn.addEventListener('click', giveGallery)
-// let page = 1
+
 function giveGallery () {
-    picture.getPicture().then(render)
+    picture.getPicture().then(cardImg => {
+      render(cardImg.hits)
+      currentHits += cardImg.hits.length;
+      if (currentHits === cardImg.totalHits) {
+        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
+        loadBtn.style.display = "none";
+      }
+    })
 }
 
 function clear () {
