@@ -20,7 +20,7 @@ export default class Picture {
     async getPicture () {
         const keyAPI = '32151990-9b10be0026312dee6c1690c83'
         const url = 'https://pixabay.com/api/'
-        const options = `?key=${keyAPI}&q=${this.serchPict}&image_type=photo&orientation=horizontal&safesearch=true&per_page=20&page=${this.page}`
+        const options = `?key=${keyAPI}&q=${this.serchPict}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`
     
         return await axios.get(`${url}${options}`).then(response => {
            this.plusPict()
